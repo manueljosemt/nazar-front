@@ -1,6 +1,10 @@
-import React from "react";
-import { List, Row, Col, Image } from "antd";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import { toggleLoader } from "../../redux/loader/loader.actions";
+import { sendRoutes } from "../../services";
 import SearchRut from "../../components/SearchRut";
+import { List, Row, Col, Card, Button, Modal } from "antd";
 import { RightCircleOutlined } from "@ant-design/icons";
 import ruta from "../../assets/ruta.jpg";
 import rutb from "../../assets/rutb.jpg";
@@ -18,12 +22,9 @@ const STEP_DATA = [
   "Espere que su número sea llamado",
 ];
 
-function Totem() {
+function DataText() {
   return (
-    <Row justify="center">
-      <Col span={14} className="mb10 mt10">
-        <SearchRut />
-      </Col>
+    <>
       <Col span={14} align="center" className="mb10">
         <List
           size="small"
@@ -48,13 +49,128 @@ function Totem() {
       <Col span={14} className="mb10">
         <Row justify="center">
           <Col span={12}>
-            <Image src={ruta} width={300} />
+            <img src={ruta} style={{ width: "100%" }} alt="left-img" />
           </Col>
           <Col span={12}>
-            <Image src={rutb} width={300} className="right" />
+            <img
+              src={rutb}
+              style={{ width: "90%" }}
+              alt="right-img"
+              className="right"
+            />
           </Col>
         </Row>
       </Col>
+    </>
+  );
+}
+
+function Totem() {
+  const { routes } = useSelector((state) => state.route);
+  const { token } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [rutas, setRutas] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [code, setCode] = useState("");
+
+  useEffect(() => {
+    const newRoutes = routes.map((item) => ({ ...item, selected: false }));
+    setRutas(newRoutes);
+  }, [routes]);
+
+  const toggleSelect = (id) => {
+    const newRutas = rutas.map((item) => {
+      if (item.id === id) {
+        item.selected = !item.selected;
+        return item;
+      } else {
+        return item;
+      }
+    });
+
+    setRutas(newRutas);
+  };
+
+  const enviarRutas = async () => {
+    try {
+      dispatch(toggleLoader());
+
+      const buildRutas = rutas.map((item) => ({
+        ruta: 100,
+        fecha: moment(item.fecha).format("YYYY-MM-DD"),
+        ciudad: item.ciudad,
+        codigo: item.codigo.toString(),
+      }));
+
+      const { data } = await sendRoutes(token, {
+        rutas: buildRutas,
+      });
+      dispatch(toggleLoader());
+
+      setCode(`${data.cola.nombre}${data.numero}`);
+      setIsModalVisible(true);
+
+      setTimeout(function () {
+        window.location.reload();
+      }, 4000);
+    } catch (error) {
+      console.error(error);
+      dispatch(toggleLoader());
+    }
+  };
+
+  return (
+    <Row justify="center">
+      <Col span={14} className="mb10 mt10">
+        <SearchRut />
+      </Col>
+      {rutas.length === 0 ? (
+        <DataText />
+      ) : (
+        <Col span={14} className="mb10 mt10">
+          <Row>
+            {rutas.map((item) => (
+              <Col span={6} key={item.id}>
+                <Card
+                  onClick={() => toggleSelect(item.id)}
+                  bodyStyle={
+                    item.selected === true ? { background: "#d8ddff" } : {}
+                  }
+                >
+                  <p>{item.codigo}</p>
+                  <p>{moment(item.fecha).format("DD-MM-YYYY")}</p>
+                  <p>{item.ciudad}</p>
+                  {item.rendido && <p>Rendido</p>}
+                  {item.razonCierre && (
+                    <p>Razon de cierre: {item.razonCierre}</p>
+                  )}
+                </Card>
+              </Col>
+            ))}
+          </Row>
+          <Row className="mt10">
+            <Col span={12} className="pr10">
+              <Button size="large" block>
+                VOLVER
+              </Button>
+            </Col>
+            <Col span={12}>
+              <Button
+                type="primary"
+                onClick={() => enviarRutas()}
+                size="large"
+                block
+              >
+                ENVIAR
+              </Button>
+            </Col>
+          </Row>
+
+          <Modal visible={isModalVisible} footer={null} closable={false}>
+            <h2>{code}</h2>
+          </Modal>
+        </Col>
+      )}
     </Row>
   );
 }

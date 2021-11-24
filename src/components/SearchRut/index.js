@@ -1,9 +1,10 @@
 import React from "react";
 import { Input } from "antd";
 import { useDispatch } from "react-redux";
-import { toggleLoader } from "../../redux/loader/loader.actions"
-import { setUserToken } from "../../redux/user/user.actions"
-import { validateID } from "../../services"
+import { toggleLoader } from "../../redux/loader/loader.actions";
+import { setUserToken } from "../../redux/user/user.actions";
+import { setRoutes } from "../../redux/routes/routes.actions";
+import { validateID, getPending } from "../../services";
 
 function SearchRut() {
   const { Search } = Input;
@@ -11,21 +12,32 @@ function SearchRut() {
 
   const onSearch = async (value) => {
     try {
-      dispatch(toggleLoader())
-      const {data} = await validateID({
-        rut: value
-      })
+      dispatch(toggleLoader());
+      const validateResponse = await validateID({
+        rut: value,
+      });
 
-      dispatch(setUserToken({
-        token: data.token,
-        name: data.nombre
-      }))
-      dispatch(toggleLoader())
+      dispatch(
+        setUserToken({
+          token: validateResponse.data.token,
+          name: validateResponse.data.nombre,
+        })
+      );
+
+      const pendingResponse = await getPending(validateResponse.data.token);
+
+      dispatch(
+        setRoutes({
+          routes: pendingResponse.data,
+        })
+      );
+
+      dispatch(toggleLoader());
     } catch (error) {
       console.error(error);
-      dispatch(toggleLoader())
+      dispatch(toggleLoader());
     }
-  }
+  };
 
   return (
     <Search
