@@ -12,9 +12,14 @@ function SearchRut() {
   const onSearch = async (value) => {
     try {
       dispatch(toggleLoader())
-      const response = await validateID(value)
-      console.log(response);
-      dispatch(setUserToken(response))
+      const {data} = await validateID({
+        rut: value
+      })
+
+      dispatch(setUserToken({
+        token: data.token,
+        name: data.nombre
+      }))
       dispatch(toggleLoader())
     } catch (error) {
       console.error(error);
