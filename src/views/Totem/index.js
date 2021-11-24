@@ -21,16 +21,16 @@ const STEP_DATA = [
 function Totem() {
   return (
     <Row justify="center">
-      <Col span={14} align="center" className="mb10 mt10">
+      <Col span={14} className="mb10 mt10">
+        <SearchRut />
+      </Col>
+      <Col span={14} align="center" className="mb10">
         <List
           size="small"
           bordered
           dataSource={TOP_DATA}
           renderItem={(item) => <List.Item>{item}</List.Item>}
         />
-      </Col>
-      <Col span={14} className="mb10">
-        <SearchRut />
       </Col>
       <Col span={14} className="mb10">
         <List
