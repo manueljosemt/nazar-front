@@ -54,7 +54,7 @@ function SearchRut() {
       dispatch(
         setMessage({
           showMessage: true,
-          message: "Error en servidor.",
+          message: error.response.data.message || "Error en servidor.",
           typeMessage: "error",
         })
       )
