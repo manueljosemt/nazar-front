@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { toggleLoader } from "../../redux/loader/loader.actions";
+import { setMessage, removeMessage } from "../../redux/message/message.actions";
 import { sendRoutes } from "../../services";
 import SearchRut from "../../components/SearchRut";
-import { List, Row, Col, Card, Button, Modal } from "antd";
+import { List, Row, Col, Card, Button, Modal, Alert } from "antd";
 import { RightCircleOutlined } from "@ant-design/icons";
 import ruta from "../../assets/ruta.jpg";
 import rutb from "../../assets/rutb.jpg";
@@ -72,6 +73,7 @@ function DataText() {
 function Totem() {
   const { routes } = useSelector((state) => state.route);
   const { token } = useSelector((state) => state.user);
+  const { showMessage, message, typeMessage } = useSelector((state) => state.message);
   const dispatch = useDispatch();
   const [rutas, setRutas] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -110,6 +112,7 @@ function Totem() {
   const enviarRutas = async () => {
     try {
       if (validateRoutes()) {
+        dispatch(removeMessage())
         dispatch(toggleLoader());
 
         const buildRutas = rutas.map((item) => ({
@@ -130,10 +133,25 @@ function Totem() {
         setTimeout(function () {
           window.location.reload();
         }, 4000);
+      } else {
+        dispatch(
+          setMessage({
+            showMessage: true,
+            message: "Debes seleccionar una ruta.",
+            typeMessage: "warning",
+          })
+        )
       }
     } catch (error) {
       console.error(error);
       dispatch(toggleLoader());
+      dispatch(
+        setMessage({
+          showMessage: true,
+          message: "Error en servidor.",
+          typeMessage: "error",
+        })
+      )
     }
   };
 
@@ -146,6 +164,16 @@ function Totem() {
       <Col span={14} className="mb10 mt10">
         <SearchRut />
       </Col>
+      { 
+        showMessage &&
+          <Col span={14} className="mb10">
+            <Alert
+              description={message}
+              type={typeMessage}
+              showIcon
+            />
+          </Col>
+      }
       {rutas.length === 0 ? (
         <DataText />
       ) : (

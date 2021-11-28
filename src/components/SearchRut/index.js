@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { toggleLoader } from "../../redux/loader/loader.actions";
 import { setUserToken } from "../../redux/user/user.actions";
 import { setRoutes } from "../../redux/routes/routes.actions";
+import { setMessage, removeMessage } from "../../redux/message/message.actions";
 import { validateID, getPending } from "../../services";
 
 function SearchRut() {
@@ -15,6 +16,7 @@ function SearchRut() {
   const onSearch = async () => {
     try {
       if(Fn.validaRut(rut)) {
+        dispatch(removeMessage());
         dispatch(toggleLoader());
         const validateResponse = await validateID({
           rut,
@@ -37,10 +39,25 @@ function SearchRut() {
 
         dispatch(toggleLoader());
         setSearchButtonState(true);
+      } else {
+        dispatch(
+          setMessage({
+            showMessage: true,
+            message: "Rut Invalido.",
+            typeMessage: "error",
+          })
+        )
       }
     } catch (error) {
       console.error(error);
       dispatch(toggleLoader());
+      dispatch(
+        setMessage({
+          showMessage: true,
+          message: error.response.data.message || "Error en servidor.",
+          typeMessage: "error",
+        })
+      )
     }
   };
 
@@ -70,6 +87,10 @@ function SearchRut() {
     for (let i = rutDigit.length; i > 0; i--) {
       const e = rutDigit.charAt(i-1);
       format = e.concat(format);
+    }
+
+    if(format.concat('-').concat(lastDigit) === "-" || format.concat('-').concat(lastDigit) === "" ){
+      dispatch(removeMessage())
     }
 
     setRut(format.concat('-').concat(lastDigit))
