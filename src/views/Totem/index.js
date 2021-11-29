@@ -195,9 +195,9 @@ function Totem() {
                     item.selected === true ? { background: "#1182BC", fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#ffffff", border: "1px solid #1182BC" } : { fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#000000", border: "1px solid #1182BC" }
                   }
                 >
-                  <p>{item.codigo}</p>
-                  <p>{moment(item.fecha).format("DD-MM-YYYY")}</p>
+                  <p><span className="text-small">Ruta</span> {moment(item.fecha).format("DD-MM-YYYY")}</p>
                   <p>{item.ciudad}</p>
+                  <p><span className="text-small">HR</span> {item.codigo}</p>
                   {item.rendido && <p>Rendido</p>}
                   {item.razonCierre && (
                     <p>Razon de cierre: {item.razonCierre}</p>
