@@ -208,15 +208,13 @@ function Totem() {
               </Col>
             ))}
           </Row>
-          <Row className="mt10 height-box">
-            <BottomBar goBack={goBack} enviarRutas={enviarRutas} />
-          </Row>
 
           <Modal visible={isModalVisible} footer={null} closable={false}>
             <h2 className="modal-text">{code}</h2>
           </Modal>
         </Col>
       )}
+      <BottomBar goBack={goBack} enviarRutas={enviarRutas} />
     </Row>
   );
 }

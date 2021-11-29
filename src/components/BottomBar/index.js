@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { Button, Col} from "antd";
+import { Button, Col, Row } from "antd";
+import "./styles.css"
 
 function BottomBar(props) {
 
-    const {goBack, enviarRutas} = props;
-    
+    const { goBack, enviarRutas } = props;
+
 
     return (
-        <>
-            <Col span={12} className="pr10">
+        <Row className="mt10 height-box bottombar">
+            <Col span={6} className="">
                 <Button size="large" onClick={() => goBack()} block>
                     VOLVER
                 </Button>
             </Col>
-            <Col span={12}>
+            <Col span={18}>
                 <Button
                     type="primary"
                     onClick={() => enviarRutas()}
@@ -23,8 +24,8 @@ function BottomBar(props) {
                     ENVIAR
                 </Button>
             </Col>
-        </>
+        </Row>
     );
 }
 
-export default BottomBar;
+export default BottomBar; 
