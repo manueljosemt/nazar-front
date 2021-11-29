@@ -10,6 +10,7 @@ import { CheckCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import ruta from "../../assets/ruta.jpg";
 import rutb from "../../assets/rutb.jpg";
 import "./styles.css"
+import BottomBar from "../../components/BottomBar";
 
 const TOP_TEXT = [
   "HORARIO DE ATENCION DE RENDICIONES",
@@ -208,21 +209,7 @@ function Totem() {
             ))}
           </Row>
           <Row className="mt10 height-box">
-            <Col span={12} className="pr10">
-              <Button size="large" onClick={() => goBack()} block>
-                VOLVER
-              </Button>
-            </Col>
-            <Col span={12}>
-              <Button
-                type="primary"
-                onClick={() => enviarRutas()}
-                size="large"
-                block
-              >
-                ENVIAR
-              </Button>
-            </Col>
+            <BottomBar goBack={goBack} enviarRutas={enviarRutas} />
           </Row>
 
           <Modal visible={isModalVisible} footer={null} closable={false}>
