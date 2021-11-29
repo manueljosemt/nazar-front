@@ -1,0 +1,18 @@
+.ant-input-group-addon:first-child {
+  border-right: 0;
+  height: 60px;
+  font-size: 24px;
+  font-family: Poppins !important;
+  font-weight: 400 !important;
+  color: #000000 !important;
+}
+
+.ant-input-group-addon:not(:first-child):not(:last-child), .ant-input-group-wrap:not(:first-child):not(:last-child), .ant-input-group > .ant-input:not(:first-child):not(:last-child) {
+  border-radius: 0;
+  height: 60px;
+}
+
+.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary) {
+  color: rgba(0, 0, 0, 0.45);
+  height: 60px;
+}

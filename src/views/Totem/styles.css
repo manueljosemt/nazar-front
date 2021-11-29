@@ -1,0 +1,65 @@
+.background-header{
+  background-image: url("../../assets/header-bg.jpg");
+  background-color: #efeded;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% 165px;
+}
+
+.box {
+  background-color: #ffffff;
+  color: #000000 !important;
+  font-family: Poppins !important;
+  font-weight: 400 !important;
+}
+
+.schedule {
+  font-size: 16px !important;
+}
+
+.steps {
+  font-size: 16px !important;
+}
+
+.attention {
+  font-size: 16px !important;
+}
+
+.ant-input {
+  font-size: 24px !important;
+}
+
+
+.ant-btn-primary {
+  border-color: #1182BC !important;
+  background: #1182BC !important;
+}
+
+.anticon {
+  font-size: 24px;
+} 
+
+.ant-btn > span {
+  font-family: Poppins !important;
+  font-weight: 800 !important;
+  font-size: 18px !important;
+}
+
+.ant-alert-description {
+  color: #000000 !important;
+  font-family: Poppins !important;
+  font-size: 18px !important;
+}
+
+.height-box {
+  height: 100vh
+}
+
+.ant-modal-body {
+  text-align: center;
+}
+
+.modal-text {
+  font-size: 120px;
+  margin: 0 !important;
+}
