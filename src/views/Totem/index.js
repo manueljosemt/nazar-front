@@ -6,9 +6,10 @@ import { setMessage, removeMessage } from "../../redux/message/message.actions";
 import { sendRoutes } from "../../services";
 import SearchRut from "../../components/SearchRut";
 import { List, Row, Col, Card, Button, Modal, Alert } from "antd";
-import { RightCircleOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import ruta from "../../assets/ruta.jpg";
 import rutb from "../../assets/rutb.jpg";
+import "./styles.css"
 
 const TOP_TEXT = [
   "HORARIO DE ATENCION DE RENDICIONES",
@@ -32,6 +33,7 @@ function DataText() {
     <>
       <Col span={14} align="center" className="mb10">
         <List
+          className="schedule box"
           size="small"
           bordered
           dataSource={TOP_TEXT}
@@ -40,6 +42,7 @@ function DataText() {
       </Col>
       <Col span={14} className="mb10">
         <List
+          className="steps box"
           size="small"
           bordered
           dataSource={STEP_TEXT}
@@ -160,7 +163,7 @@ function Totem() {
   };
 
   return (
-    <Row justify="center">
+    <Row justify="center" className="background-header height-box">
       <Col span={14} className="mb10 mt10">
         <SearchRut />
       </Col>
@@ -179,8 +182,9 @@ function Totem() {
       ) : (
         <Col span={14}>
           <Row>
-            <Col span={24} className="mb10">
+            <Col span={24} className="mb30">
               <List
+                className="attention box"
                 size="small"
                 bordered
                 dataSource={ROUTES_TEXT}
@@ -194,7 +198,7 @@ function Totem() {
                 <Card
                   onClick={() => toggleSelect(item.id)}
                   bodyStyle={
-                    item.selected === true ? { background: "#d8ddff" } : {}
+                    item.selected === true ? { background: "#1182BC", fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#ffffff", border: "1px solid #1182BC" } : { fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#000000", border: "1px solid #1182BC" }
                   }
                 >
                   <p>{item.codigo}</p>
@@ -204,11 +208,13 @@ function Totem() {
                   {item.razonCierre && (
                     <p>Razon de cierre: {item.razonCierre}</p>
                   )}
+
+                  <CheckCircleOutlined  style={{float: "right", color: "#ffffff"}} />
                 </Card>
               </Col>
             ))}
           </Row>
-          <Row className="mt10">
+          <Row className="mt10 height-box">
             <Col span={12} className="pr10">
               <Button size="large" onClick={() => goBack()} block>
                 VOLVER
@@ -227,7 +233,7 @@ function Totem() {
           </Row>
 
           <Modal visible={isModalVisible} footer={null} closable={false}>
-            <h2>{code}</h2>
+            <h2 className="modal-text">{code}</h2>
           </Modal>
         </Col>
       )}

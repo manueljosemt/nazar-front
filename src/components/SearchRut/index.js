@@ -6,6 +6,7 @@ import { setUserToken } from "../../redux/user/user.actions";
 import { setRoutes } from "../../redux/routes/routes.actions";
 import { setMessage, removeMessage } from "../../redux/message/message.actions";
 import { validateID, getPending } from "../../services";
+import "./styles.css"
 
 function SearchRut() {
   const { Search } = Input;
