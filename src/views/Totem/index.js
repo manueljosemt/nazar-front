@@ -5,7 +5,7 @@ import { toggleLoader } from "../../redux/loader/loader.actions";
 import { setMessage, removeMessage } from "../../redux/message/message.actions";
 import { sendRoutes } from "../../services";
 import SearchRut from "../../components/SearchRut";
-import { List, Row, Col, Card, Button, Modal, Alert } from "antd";
+import { List, Row, Col, Card, Modal, Alert } from "antd";
 import { CheckCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import ruta from "../../assets/ruta.jpg";
 import rutb from "../../assets/rutb.jpg";
@@ -212,9 +212,9 @@ function Totem() {
           <Modal visible={isModalVisible} footer={null} closable={false}>
             <h2 className="modal-text">{code}</h2>
           </Modal>
+          <BottomBar goBack={goBack} enviarRutas={enviarRutas} />
         </Col>
       )}
-      <BottomBar goBack={goBack} enviarRutas={enviarRutas} />
     </Row>
   );
 }
