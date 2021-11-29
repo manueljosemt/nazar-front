@@ -101,15 +101,7 @@ function Totem() {
   };
 
   const validateRoutes = () => {
-    let response = false;
-
-    rutas.forEach((item) => {
-      if (item.selected === true) {
-        response = true;
-      }
-    });
-
-    return response;
+    return rutas.some( (item) => item.selected );
   };
 
   const enviarRutas = async () => {
@@ -120,10 +112,10 @@ function Totem() {
 
         const buildRutas = rutas.map((item) => ({
           ruta: 100,
-          fecha: moment(item.fecha).format("YYYY-MM-DD"),
-          ciudad: item.ciudad,
-          codigo: item.codigo.toString(),
-        }));
+            fecha: moment(item.fecha).format("YYYY-MM-DD"),
+            ciudad: item.ciudad,
+            codigo: item.codigo.toString(),
+          }));
 
         const { data } = await sendRoutes(token, {
           rutas: buildRutas,
