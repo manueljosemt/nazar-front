@@ -110,8 +110,9 @@ function Totem() {
         dispatch(removeMessage())
         dispatch(toggleLoader());
 
-        const buildRutas = rutas.map((item) => ({
-          ruta: 100,
+        const buildRutas = rutas
+          .filter( (item) => item.selected)
+          .map((item) => ({
             fecha: moment(item.fecha).format("YYYY-MM-DD"),
             ciudad: item.ciudad,
             codigo: item.codigo.toString(),
