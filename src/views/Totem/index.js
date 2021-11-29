@@ -87,9 +87,9 @@ function Totem() {
     setRutas(newRoutes);
   }, [routes]);
 
-  const toggleSelect = (id) => {
+  const toggleSelect = (codigo) => {
     const newRutas = rutas.map((item) => {
-      if (item.id === id) {
+      if (item.codigo === codigo) {
         item.selected = !item.selected;
         return item;
       } else {
@@ -194,9 +194,9 @@ function Totem() {
           </Row>
           <Row>
             {rutas.map((item) => (
-              <Col span={6} key={item.id}>
+              <Col span={6} key={item.codigo}>
                 <Card
-                  onClick={() => toggleSelect(item.id)}
+                  onClick={() => toggleSelect(item.codigo)}
                   bodyStyle={
                     item.selected === true ? { background: "#1182BC", fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#ffffff", border: "1px solid #1182BC" } : { fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#000000", border: "1px solid #1182BC" }
                   }
