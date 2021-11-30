@@ -5,11 +5,12 @@ import { toggleLoader } from "../../redux/loader/loader.actions";
 import { setMessage, removeMessage } from "../../redux/message/message.actions";
 import { sendRoutes } from "../../services";
 import SearchRut from "../../components/SearchRut";
-import { List, Row, Col, Card, Button, Modal, Alert } from "antd";
+import { List, Row, Col, Card, Modal, Alert } from "antd";
 import { CheckCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import ruta from "../../assets/ruta.jpg";
 import rutb from "../../assets/rutb.jpg";
 import "./styles.css"
+import BottomBar from "../../components/BottomBar";
 
 const TOP_TEXT = [
   "HORARIO DE ATENCION DE RENDICIONES",
@@ -87,9 +88,9 @@ function Totem() {
     setRutas(newRoutes);
   }, [routes]);
 
-  const toggleSelect = (id) => {
+  const toggleSelect = (codigo) => {
     const newRutas = rutas.map((item) => {
-      if (item.id === id) {
+      if (item.codigo === codigo) {
         item.selected = !item.selected;
         return item;
       } else {
@@ -101,15 +102,7 @@ function Totem() {
   };
 
   const validateRoutes = () => {
-    let response = false;
-
-    rutas.forEach((item) => {
-      if (item.selected === true) {
-        response = true;
-      }
-    });
-
-    return response;
+    return rutas.some( (item) => item.selected );
   };
 
   const enviarRutas = async () => {
@@ -118,12 +111,13 @@ function Totem() {
         dispatch(removeMessage())
         dispatch(toggleLoader());
 
-        const buildRutas = rutas.map((item) => ({
-          ruta: 100,
-          fecha: moment(item.fecha).format("YYYY-MM-DD"),
-          ciudad: item.ciudad,
-          codigo: item.codigo.toString(),
-        }));
+        const buildRutas = rutas
+          .filter( (item) => item.selected)
+          .map((item) => ({
+            fecha: moment(item.fecha).format("YYYY-MM-DD"),
+            ciudad: item.ciudad,
+            codigo: item.codigo.toString(),
+          }));
 
         const { data } = await sendRoutes(token, {
           rutas: buildRutas,
@@ -194,16 +188,16 @@ function Totem() {
           </Row>
           <Row>
             {rutas.map((item) => (
-              <Col span={6} key={item.id}>
+              <Col span={6} key={item.codigo}>
                 <Card
-                  onClick={() => toggleSelect(item.id)}
+                  onClick={() => toggleSelect(item.codigo)}
                   bodyStyle={
                     item.selected === true ? { background: "#1182BC", fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#ffffff", border: "1px solid #1182BC" } : { fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#000000", border: "1px solid #1182BC" }
                   }
                 >
-                  <p>{item.codigo}</p>
-                  <p>{moment(item.fecha).format("DD-MM-YYYY")}</p>
+                  <p><span className="text-small">Ruta</span> {moment(item.fecha).format("DD-MM-YYYY")}</p>
                   <p>{item.ciudad}</p>
+                  <p><span className="text-small">HR</span> {item.codigo}</p>
                   {item.rendido && <p>Rendido</p>}
                   {item.razonCierre && (
                     <p>Razon de cierre: {item.razonCierre}</p>
@@ -214,27 +208,11 @@ function Totem() {
               </Col>
             ))}
           </Row>
-          <Row className="mt10 height-box">
-            <Col span={12} className="pr10">
-              <Button size="large" onClick={() => goBack()} block>
-                VOLVER
-              </Button>
-            </Col>
-            <Col span={12}>
-              <Button
-                type="primary"
-                onClick={() => enviarRutas()}
-                size="large"
-                block
-              >
-                ENVIAR
-              </Button>
-            </Col>
-          </Row>
 
           <Modal visible={isModalVisible} footer={null} closable={false}>
             <h2 className="modal-text">{code}</h2>
           </Modal>
+          <BottomBar goBack={goBack} enviarRutas={enviarRutas} />
         </Col>
       )}
     </Row>

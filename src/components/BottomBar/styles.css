@@ -1,0 +1,14 @@
+.bottombar{
+    position: fixed;
+    bottom: 0;
+    width: 58.333333%;
+    height: 65px;
+    line-height: 90px;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.text-small {
+    font-size: 0.8em;
+    color: gray;
+}
