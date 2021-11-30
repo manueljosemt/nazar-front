@@ -192,7 +192,7 @@ function Totem() {
                 <Card
                   onClick={() => toggleSelect(item.codigo)}
                   bodyStyle={
-                    item.selected === true ? { background: "#1182BC", fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#ffffff", border: "1px solid #1182BC" } : { fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#000000", border: "1px solid #1182BC" }
+                    item.selected === true ? { background: "#1182BC", fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#ffffff", border: "1px solid #1182BC", height: "225px" } : { fontFamily: "Poppins", fontWeight: 400, fontSize: "16px", color: "#000000", border: "1px solid #1182BC", height: "225px" }
                   }
                 >
                   <p><span className="text-small">Ruta</span> {moment(item.fecha).format("DD-MM-YYYY")}</p>
