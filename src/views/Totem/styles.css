@@ -63,3 +63,10 @@
   font-size: 120px;
   margin: 0 !important;
 }
+
+.ant-alert-with-description {
+  align-items: flex-start;
+  padding: 15px 15px 15px 24px;
+  border-color: red !important;
+  border-width: medium !important;
+}
