@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { toggleLoader } from "../../redux/loader/loader.actions";
 import { setMessage, removeMessage } from "../../redux/message/message.actions";
-import { sendRoutes } from "../../services";
+import api from "../../services";
 import SearchRut from "../../components/SearchRut";
 import { List, Row, Col, Card, Modal, Alert } from "antd";
 import { CheckCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
@@ -76,7 +76,6 @@ function DataText() {
 
 function Totem() {
   const { routes } = useSelector((state) => state.route);
-  const { token } = useSelector((state) => state.user);
   const { showMessage, message, typeMessage } = useSelector((state) => state.message);
   const dispatch = useDispatch();
   const [rutas, setRutas] = useState([]);
@@ -87,6 +86,10 @@ function Totem() {
     const newRoutes = routes.map((item) => ({ ...item, selected: false }));
     setRutas(newRoutes);
   }, [routes]);
+
+  useEffect(() => {
+    localStorage.removeItem("token")
+  }, []);
 
   const toggleSelect = (codigo) => {
     const newRutas = rutas.map((item) => {
@@ -119,7 +122,7 @@ function Totem() {
             codigo: item.codigo.toString(),
           }));
 
-        const { data } = await sendRoutes(token, {
+        const { data } = await api.sendRoutes({
           rutas: buildRutas,
         });
         dispatch(toggleLoader());
