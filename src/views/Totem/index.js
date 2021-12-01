@@ -12,13 +12,6 @@ import rutb from "../../assets/rutb.jpg";
 import "./styles.css"
 import BottomBar from "../../components/BottomBar";
 
-const TOP_TEXT = [
-  "HORARIO DE ATENCION DE RENDICIONES",
-  "Lunes a Viernes de 07:30 hasta 08:30 horas.",
-  "Sabados desde 09:00 hasta 14:00 horas.",
-  "Feriados renunciables desde 10:00 a 16:00 horas.",
-];
-
 const STEP_TEXT = [
   "Utilice la pistola para leer su carnet de identidad",
   "Seleccione las rutas que rendirá",
@@ -30,6 +23,35 @@ const ROUTES_TEXT = [
 ];
 
 function DataText() {
+  const dispatch = useDispatch();
+  const [horarios, setHorarios] = useState([]);
+
+  useEffect(() => {
+    const obtenerHorarios = async () => {
+      try {
+
+        dispatch(toggleLoader());
+
+        const { data } = await api.getSchedule();
+        const { semana, finSemana } = data
+
+        const TOP_TEXT = [
+          "HORARIO DE ATENCION DE RENDICIONES",
+          `Lunes a Viernes de ${semana.inicio} hasta ${semana.fin} horas.`,
+          `Sabados desde ${finSemana.inicio} hasta ${finSemana.fIn} horas.`,
+          "Feriados renunciables desde 10:00 a 16:00 horas.",
+        ];
+
+        setHorarios(TOP_TEXT)
+      } catch (error) {
+        console.error(error);
+        dispatch(toggleLoader());
+      }
+    };
+
+    obtenerHorarios()
+  }, [dispatch]);
+
   return (
     <>
       <Col span={14} align="center" className="mb10">
@@ -37,7 +59,7 @@ function DataText() {
           className="schedule box"
           size="small"
           bordered
-          dataSource={TOP_TEXT}
+          dataSource={horarios}
           renderItem={(item) => <List.Item>{item}</List.Item>}
         />
       </Col>
