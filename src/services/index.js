@@ -17,13 +17,16 @@ axios.interceptors.request.use(
 
 const api = {
   validateID: async (body) => {
-    return await axios.post(`${BASE_URL}/validar`, body);
+    return await axios.post(`${BASE_URL}/transportista/validar`, body);
+  },
+  getSchedule: async () => {
+    return await axios.get(`${BASE_URL}/configuracion/horarios`);
   },
   getPending: async () => {
-    return await axios.get(`${BASE_URL}/pendientes`);
+    return await axios.get(`${BASE_URL}/transportista/pendientes`);
   },
   sendRoutes: async (body) => {
-    return await axios.post(`${BASE_URL}/rendir`, body);
+    return await axios.post(`${BASE_URL}/transportista/rendir`, body);
   }
 };
 
