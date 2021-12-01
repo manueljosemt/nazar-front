@@ -5,7 +5,7 @@ import { toggleLoader } from "../../redux/loader/loader.actions";
 import { setUserToken } from "../../redux/user/user.actions";
 import { setRoutes } from "../../redux/routes/routes.actions";
 import { setMessage, removeMessage } from "../../redux/message/message.actions";
-import { validateID, getPending } from "../../services";
+import api from "../../services";
 import "./styles.css"
 
 function SearchRut() {
@@ -19,7 +19,7 @@ function SearchRut() {
       if(Fn.validaRut(rut)) {
         dispatch(removeMessage());
         dispatch(toggleLoader());
-        const validateResponse = await validateID({
+        const validateResponse = await api.validateID({
           rut,
         });
 
@@ -30,7 +30,9 @@ function SearchRut() {
           })
         );
 
-        const pendingResponse = await getPending(validateResponse.data.token);
+        localStorage.setItem("token", validateResponse.data.token);
+
+        const pendingResponse = await api.getPending();
 
         dispatch(
           setRoutes({
