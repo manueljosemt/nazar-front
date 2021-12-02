@@ -73,3 +73,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 "homepage": "https://192.168.1.19/rendiciones",
+
+# Comandos para despliegue
+npm run build
+rm -r /Volumes/Nazar/rendiciones/Web/**.*
+cp -R -p build/ /Volumes/Nazar/rendiciones/Web
