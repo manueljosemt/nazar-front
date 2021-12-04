@@ -5,7 +5,7 @@ import { toggleLoader } from "../../redux/loader/loader.actions";
 import { setMessage, removeMessage } from "../../redux/message/message.actions";
 import api from "../../services";
 import SearchRut from "../../components/SearchRut";
-import { List, Row, Col, Card, Modal, Alert } from "antd";
+import { List, Row, Col, Card, Modal, Alert, Spin } from "antd";
 import { CheckCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import ruta from "../../assets/ruta.jpg";
 import rutb from "../../assets/rutb.jpg";
@@ -24,6 +24,7 @@ const ROUTES_TEXT = [
 
 function DataText() {
   const dispatch = useDispatch();
+  const { loader } = useSelector((state) => state.loader);
   const [horarios, setHorarios] = useState([]);
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function DataText() {
         ];
 
         setHorarios(TOP_TEXT)
+        dispatch(toggleLoader());
       } catch (error) {
         console.error(error);
         dispatch(toggleLoader());
@@ -61,6 +63,7 @@ function DataText() {
           bordered
           dataSource={horarios}
           renderItem={(item) => <List.Item>{item}</List.Item>}
+          loading={loader}
         />
       </Col>
       <Col span={14} className="mb10">
@@ -99,6 +102,7 @@ function DataText() {
 function Totem() {
   const { routes } = useSelector((state) => state.route);
   const { showMessage, message, typeMessage } = useSelector((state) => state.message);
+  const { loader } = useSelector((state) => state.loader);
   const dispatch = useDispatch();
   const [rutas, setRutas] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -212,7 +216,7 @@ function Totem() {
             </Col>
           </Row>
           <Row>
-            {rutas.map((item) => (
+            {loader ? <Spin/> : rutas.map((item) => (
               <Col span={6} key={item.codigo}>
                 <Card
                   onClick={() => toggleSelect(item.codigo)}
